@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useForm, SubmitHandler } from "react-hook-form"
 
-import supabase  from '../supabaseConfig.js'
+import supabase  from '../supabaseConfig.tsx'
 
 import SubmitButton from "./SubmitButton"
 
