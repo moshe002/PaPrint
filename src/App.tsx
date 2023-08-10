@@ -8,6 +8,11 @@ function App() {
 
   const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false)
 
+  // const apiKey = import.meta.env.VITE_SUPABASE_API_KEY 
+  // const supabaseUrl = import.meta.env.VITE_SUPABASE_URL 
+  // console.log(apiKey)
+  // console.log(supabaseUrl)
+
   return (
     <>
       {

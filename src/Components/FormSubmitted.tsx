@@ -12,7 +12,7 @@ const FormSubmitted:React.FC<Prop> = ({ setIsFormSubmitted }) => {
             </h1>
             <br />
             <button 
-                className="bg-white p-3 font-semibold text-xl rounded-md"
+                className="bg-black text-white p-3 font-semibold text-xl rounded-md opacity-70 duration-150 hover:opacity-100"
                 type="button" 
                 onClick={() => setIsFormSubmitted(false)}>
                     CLOSE
