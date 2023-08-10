@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
-import { createClient } from '@supabase/supabase-js'
 import { useForm, SubmitHandler } from "react-hook-form"
+
+import supabase  from '../supabaseConfig.js'
 
 import SubmitButton from "./SubmitButton"
 
@@ -16,13 +17,9 @@ interface Inputs {
 
 interface Props {
     setIsFormSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
-    supabaseKey: string;
-    supabaseUrl: string;
 }
 
-const Form:React.FC<Props> = ({ setIsFormSubmitted, supabaseKey, supabaseUrl }) => {
-    
-    const supabase = createClient(supabaseUrl, supabaseKey)
+const Form:React.FC<Props> = ({ setIsFormSubmitted }) => {
     
     const { 
             register, 
