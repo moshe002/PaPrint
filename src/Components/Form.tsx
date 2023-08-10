@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { useForm, SubmitHandler } from "react-hook-form"
 
@@ -6,32 +7,89 @@ import SubmitButton from "./SubmitButton"
 interface Inputs {
     file: FileList;
     name: string;
-    number: number;
+    number: string;
     email: string;
     purpose: string;
     message: string;
 }
 
-function Form() {
+interface Props {
+    setIsFormSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Form:React.FC<Props> = ({ setIsFormSubmitted }) => {
 
     const supabase = createClient(import.meta.env.VITE_URL, import.meta.env.VITE_API_KEY)
 
-    const { register, 
+    const { 
+            register, 
             handleSubmit, 
-            formState: { errors } 
+            reset, 
+            formState,
+            formState: { errors, isSubmitSuccessful }
         } = useForm<Inputs>()
 
-    const onsubmit: SubmitHandler<Inputs> = (data) => {
-        //e.preventDefault()
-        console.log(data) // data is an object
+    let randomNum = Math.floor(Math.random() * 10) 
+    let anotherRandomNum = Math.floor(Math.random() * 50)
+
+    const uploadFile = async (file:any) => {
+        const { data, error } = await supabase
+        .storage
+        .from("to_print")
+        .upload(randomNum + "/" + anotherRandomNum + file.name, file)
+
+        if(error) {
+            console.error(error)
+        }
+        if(data) {
+            console.log(data)
+        }
     }
+    
+    const onsubmit: SubmitHandler<Inputs> = async (formData, e:any) => {
+        e.preventDefault()
+        //console.log(formData) // data is an object
+        let file = formData.file[0]
+        let name = formData.name
+        let number = formData.number
+        let email = formData.email
+        let message = formData.message
+        let purpose = formData.purpose
+
+        uploadFile(file)
+
+        let { data, error } = await supabase
+        .from("toPrint")
+        .insert([{name, number, email, message, purpose}])
+    
+        if(error) {
+            console.error(error)
+        }
+        if(data) {
+            console.log(data)  
+        }
+        setIsFormSubmitted(true)
+    }
+
+    useEffect(() => {
+        if (isSubmitSuccessful) {
+            reset({ 
+                file: [],
+                name: "",
+                number: "",
+                email: "",
+                purpose: "",
+                message: ""
+            })
+        }
+    }, [formState, reset])
 
     return (
         <>
             <form onSubmit={handleSubmit(onsubmit)} className="flex flex-col gap-3 items-center p-3">
                 <div className="flex flex-col items-center">
                     <label className='font-mono' htmlFor="file">File:</label>
-                    <p className='text-gray-400 text-xs italic'>(word, pdf, images, text files, etc)</p>
+                    <p className='text-gray-400 text-xs italic'>(word, pdf, images, text files, etc.)</p>
                     <div className="flex p-5 items-center border-dashed w-auto h-20 border-4 border-gray-300 rounded-md bg-gray-100">
                         <input 
                             type="file" 
