@@ -5,7 +5,8 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import SubmitButton from "./SubmitButton"
 
 interface Inputs {
-    file: FileList;
+    file: FileList | null;
+    filename: string;
     name: string;
     number: string;
     email: string;
@@ -49,7 +50,11 @@ const Form:React.FC<Props> = ({ setIsFormSubmitted }) => {
     const onsubmit: SubmitHandler<Inputs> = async (formData, e:any) => {
         e.preventDefault()
         //console.log(formData) // data is an object
-        let file = formData.file[0]
+        let file;
+        if(formData.file != null){
+            file = formData.file[0]
+        }
+        let filename = formData.filename
         let name = formData.name
         let number = formData.number
         let email = formData.email
@@ -60,7 +65,7 @@ const Form:React.FC<Props> = ({ setIsFormSubmitted }) => {
 
         let { data, error } = await supabase
         .from("toPrint")
-        .insert([{name, number, email, message, purpose}])
+        .insert([{filename, name, number, email, message, purpose}])
     
         if(error) {
             console.error(error)
@@ -74,7 +79,8 @@ const Form:React.FC<Props> = ({ setIsFormSubmitted }) => {
     useEffect(() => {
         if (isSubmitSuccessful) {
             reset({ 
-                file: [],
+                file: null,
+                filename: "",
                 name: "",
                 number: "",
                 email: "",
@@ -100,6 +106,19 @@ const Form:React.FC<Props> = ({ setIsFormSubmitted }) => {
                     </div>
                     {errors.file?.type === "required" && (
                         <p className='text-sm text-red-500 italic' role="alert">File is required</p>
+                    )}
+                </div>
+                <div className="flex flex-col items-center">
+                    <label className='font-mono' htmlFor="filename">Name of File:</label>
+                    <input 
+                        className="text-center bg-gray-100 p-1 rounded-md border-2 border-gray-200 focus:border-gray-400 duration-150 outline-none" 
+                        type="text" 
+                        id="filename" 
+                        {...register("filename", { required: true })}
+                        aria-invalid={errors.filename ? "true" : "false"} 
+                    />
+                    {errors.filename?.type === "required" && (
+                        <p className='text-sm text-red-500 italic' role="alert">Filename is required</p>
                     )}
                 </div>
                 <div className="flex flex-col items-center">
