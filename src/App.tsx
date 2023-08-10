@@ -8,6 +8,9 @@ function App() {
 
   const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false)
 
+  const supabaseKey = import.meta.env.VITE_REACT_APP_ANON_KEY;
+  const supabaseUrl = import.meta.env.VITE_REACT_APP_SUPABASE_URL;
+
   return (
     <>
       {
@@ -17,7 +20,10 @@ function App() {
       }
       <div className='flex flex-col p-3 justify-center items-center h-full w-full'>    
         <Header />
-        <Form setIsFormSubmitted={setIsFormSubmitted} />
+        <Form 
+          supabaseKey={supabaseKey}
+          supabaseUrl={supabaseUrl}
+          setIsFormSubmitted={setIsFormSubmitted} />
       </div>
     </>
   )
