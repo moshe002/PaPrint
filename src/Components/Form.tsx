@@ -21,8 +21,7 @@ interface Props {
 const Form:React.FC<Props> = ({ setIsFormSubmitted }) => {
 
     const supabaseApi = import.meta.env.VITE_SUPABASE_ANON_KEY
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-    const supabase = createClient(supabaseUrl, supabaseApi)
+    const supabase = createClient('https://mzglgldsmcjedhciycas.supabase.co', supabaseApi)
 
     const { 
             register, 
