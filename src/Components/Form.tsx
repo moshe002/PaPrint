@@ -20,9 +20,9 @@ interface Props {
 
 const Form:React.FC<Props> = ({ setIsFormSubmitted }) => {
 
-    const supabaseApi = import.meta.env.VITE_SUPABASE_ANON_KEY
-    const supabase = createClient('https://mzglgldsmcjedhciycas.supabase.co', supabaseApi)
-
+    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+    const supabase = createClient('https://mzglgldsmcjedhciycas.supabase.co', supabaseKey)
+    
     const { 
             register, 
             handleSubmit, 
