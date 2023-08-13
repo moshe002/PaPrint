@@ -29,14 +29,13 @@ const Form:React.FC<Props> = ({ setIsFormSubmitted }) => {
             formState: { errors, isSubmitSuccessful }
         } = useForm<Inputs>()
 
-    let randomNum = Math.floor(Math.random() * 10) 
-    let anotherRandomNum = Math.floor(Math.random() * 50)
+    //let randomNum = Math.floor(Math.random() * 10) 
 
-    const uploadFile = async (file:any) => {
+    const uploadFile = async (file:any, name:string) => {
         const { data, error } = await supabase
         .storage
         .from("to_print")
-        .upload(randomNum + "/" + anotherRandomNum + file.name, file)
+        .upload(name + "/" + file.name, file)
 
         if(error) {
             console.error(error)
@@ -60,7 +59,7 @@ const Form:React.FC<Props> = ({ setIsFormSubmitted }) => {
         let message = formData.message
         let purpose = formData.purpose
 
-        uploadFile(file)
+        uploadFile(file, name)
 
         let { data, error } = await supabase
         .from("toPrint")
